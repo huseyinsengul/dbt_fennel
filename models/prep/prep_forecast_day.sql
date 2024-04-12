@@ -5,7 +5,7 @@ WITH forecast_day_data AS (
 add_features AS (
     SELECT *
         ,date_part('day', date) AS day_of_month -- day of month as a number
-        ,to_chart(date, 'month') AS month_of_year -- month name as a text
+        ,to_char(date, 'month') AS month_of_year -- month name as a text
         ,date_part('year', date) AS year -- year as a number
         ,to_char(date, 'day') AS day_of_week -- weekday name as text
         ,date_part('week', date) AS week_of_year -- calender week number as number
