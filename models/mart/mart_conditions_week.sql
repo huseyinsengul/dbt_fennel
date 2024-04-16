@@ -45,6 +45,7 @@ aggregations_adding_features AS (
         SELECT 
             year_and_week  -- grouping on
             ,week_of_year   -- grouping on
+            ,month_of_year
             ,year           -- grouping on
             ,city           -- grouping on
             ,region         -- grouping on
