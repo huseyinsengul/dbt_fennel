@@ -27,7 +27,7 @@ filtering_features AS (
             ,condition_text
             -- ,condition_icon
             -- ,condition_code
-            -- ,max_wind_kph
+            ,max_wind_kph
             -- ,avg_vis_km
             -- ,uv
             ,sunrise
@@ -53,12 +53,16 @@ aggregations_adding_features AS (
             ,lat            -- grouping on
             ,lon            -- grouping on
             ,timezone_id    -- grouping on
+            ,sunrise
+            ,sunset
+            ,CAST(sunset AS time) - CAST(sunrise AS time) AS daytime
             ,MAX(max_temp_c) AS max_temp_c
             ,MIN(min_temp_c) AS min_temp_c
             ,AVG(avg_temp_c) AS avg_temp_c
             ,SUM(total_precip_mm) AS total_precip_mm
             ,SUM(total_snow_cm) AS total_snow_cm
             ,AVG(avg_humidity) AS avg_humidity
+            ,MAX(max_wind_kph) AS max_wind_kph
             ,SUM(daily_will_it_rain) AS will_it_rain_days
             ,AVG(daily_chance_of_rain) AS daily_chance_of_rain_avg
             ,SUM(daily_will_it_snow) AS will_it_snow_days
@@ -94,7 +98,7 @@ aggregations_adding_features AS (
 									,'Patchy light snow') then 1 else 0 end) as snow_days
 		,sum(case when condition_text in ('Blizzard') then 1 else 0 end) as stay_at_home_days
     FROM filtering_features
-    GROUP BY (year_and_week, month_of_year, week_of_year, year, city, region, country, lat, lon, timezone_id)
+    GROUP BY (year_and_week, month_of_year, week_of_year, year, city, region, country, lat, lon, timezone_id, sunrise, sunset)
     ORDER BY city
 )
 SELECT * 
